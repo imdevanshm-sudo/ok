@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Ananta Vows - Royal Destination Weddings</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Cinzel:wght@400;500;600&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"/>
+    
+    <!-- Material Symbols -->
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- React and Dependencies -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#681e26", // Deep Royal Red
+                        "void": "#050101", // Deepest Black/Brown
+                        "surface": "#120808", // Dark Warm Grey
+                        "gold": "#D4AF37", // Classic Gold
+                        "gold-light": "#F3E5AB", // Champagne
+                        "gold-dim": "#8C7335", // Antique Gold
+                        "parchment": "#F0EAD6", // Off-white
+                    },
+                    fontFamily: {
+                        "heading": ["Playfair Display", "serif"],
+                        "body": ["Cormorant Garamond", "serif"],
+                        "ui": ["Cinzel", "serif"],
+                    },
+                    backgroundImage: {
+                        'gold-gradient': 'linear-gradient(135deg, #D4AF37 0%, #F3E5AB 50%, #8C7335 100%)',
+                        'radial-vignette': 'radial-gradient(circle, transparent 20%, #050101 90%)',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1.2s ease-out forwards',
+                        'slide-up': 'slideUp 1s ease-out forwards',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 120s linear infinite', // Very slow rotation for the mandala
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                },
+            },
+        }
+    </script>
+
+    <style>
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        :root {
+            --safe-top: env(safe-area-inset-top);
+            --safe-bottom: env(safe-area-inset-bottom);
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #080202; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+        .wedding-motifs-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.04;
+            mix-blend-mode: screen;
+            background-repeat: repeat;
+            background-size: 360px 360px;
+            background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='360'%20height='360'%20viewBox='0%200%20360%20360'%3E%3Cdefs%3E%3Cpattern%20id='j'%20width='36'%20height='36'%20patternUnits='userSpaceOnUse'%3E%3Cpath%20d='M18,0v36M0,18h36'%20stroke='%23D4AF37'%20stroke-width='0.9'%20opacity='0.18'/%3E%3Cpath%20d='M0,0l36,36M36,0L0,36'%20stroke='%23D4AF37'%20stroke-width='0.6'%20opacity='0.10'/%3E%3C/pattern%3E%3C/defs%3E%3Crect%20width='360'%20height='360'%20fill='url(%23j)'/%3E%3Cg%20fill='none'%20stroke='%23D4AF37'%20stroke-width='1.6'%20opacity='0.62'%3E%3Cpath%20d='M78,212c0-38,31-69,69-69s69,31,69,69v22c0,11-9,20-20,20h-16c-11,0-20-9-20-20v-16c0-10-8-18-18-18h-10c-10,0-18,8-18,18v16c0,11-9,20-20,20H98c-11,0-20-9-20-20v-22z'/%3E%3Cpath%20d='M204,178c12-18,34-20,50-8c16,12,18,35,5,50c-12,13-33,12-45-1'/%3E%3Cpath%20d='M259,228c5,18-10,32-28,30'/%3E%3Cpath%20d='M154,134h58v22h-58zM168,134v-16h30v16'%20opacity='0.55'/%3E%3Cpath%20d='M188,118c8-18,22-28,42-26c14,2,26,12,28,26'%20opacity='0.34'/%3E%3Cpath%20d='M210,92c12-16,26-22,44-20'%20opacity='0.22'/%3E%3Cpath%20d='M102,164c10-10,22-16,36-18'%20opacity='0.18'/%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .glass-panel {
+            background: rgba(18, 8, 8, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .page-transition {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        /* Range Slider Styling - Gold Theme */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #D4AF37;
+            border: 2px solid #080202;
+            cursor: pointer;
+            margin-top: -7px;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            position: relative;
+            z-index: 20;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: rgba(140, 115, 53, 0.3);
+            border-radius: 2px;
+        }
+        input[type=range]:focus { outline: none; }
+        
+        /* Hide number input arrows */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; margin: 0; 
+        }
+
+        .highlight-pulse {
+            animation: pulseGold 0.5s ease-in-out;
+        }
+        @keyframes pulseGold {
+            0% { color: #D4AF37; transform: scale(1); }
+            50% { color: #fff; transform: scale(1.1); }
+            100% { color: #D4AF37; transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body class="bg-void text-parchment font-body overflow-x-hidden selection:bg-primary selection:text-gold-light antialiased">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useContext, createContext } = React;
+        const { createRoot } = ReactDOM;
+        const { HashRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        // --- Resilient Images ---
+        const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='800' viewBox='0 0 1200 800'%3E%3Crect width='1200' height='800' fill='%23080202'/%3E%3Ccircle cx='600' cy='400' r='100' fill='%23D4AF37' opacity='0.2'/%3E%3C/svg%3E";
+
+        const SafeImage = ({ src, alt, className = "", style = {}, loading = "lazy" }) => (
+            <img
+                src={src}
+                alt={alt}
+                className={className}
+                style={style}
+                loading={loading}
+                decoding="async"
+                onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = FALLBACK_IMAGE; }}
+            />
+        );
+
+        // --- Graphics ---
+        const MandalaBackground = () => (
+            <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" className="w-full h-full text-gold/20 stroke-current fill-none overflow-visible">
+                <defs>
+                    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#8C7335" stopOpacity="0.2" />
+                        <stop offset="50%" stopColor="#D4AF37" stopOpacity="0.4" />
+                        <stop offset="100%" stopColor="#8C7335" stopOpacity="0.2" />
+                    </linearGradient>
+                </defs>
+                <g strokeWidth="0.8">
+                    <circle cx="500" cy="500" r="480" strokeOpacity="0.15" />
+                    <circle cx="500" cy="500" r="450" strokeOpacity="0.1" />
+                    <path d="M500,50 Q750,500 500,950 Q250,500 500,50" stroke="url(#goldGrad)" />
+                    <path d="M50,500 Q500,250 950,500 Q500,750 50,500" stroke="url(#goldGrad)" />
+                    <circle cx="500" cy="500" r="200" strokeOpacity="0.2" />
+                    <circle cx="500" cy="500" r="350" strokeDasharray="2 10" strokeOpacity="0.15" />
+                    <rect x="350" y="350" width="300" height="300" transform="rotate(45 500 500)" strokeOpacity="0.1" />
+                </g>
+            </svg>
+        );
+
+        // --- Configuration ---
+        const CONFIG = {
+            costs: {
+                roomPerNight: 8000,
+                cateringPerGuest: 3000,
+                logisticsBase: 50000,
+                logisticsPerGuest: 280,
+                taxRate: 0.18
+            },
+            ratios: {
+                arrival: 0.24,
+                peak: 0.40,
+                departure: 0.08
+            }
+        };
+
+        const formatCurrency = (amount) => {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amount);
+        };
+
+        // --- Context ---
+        const BookingContext = createContext();
+
+        const BookingProvider = ({ children }) => {
+            const [dates, setDates] = useState({ start: 12, end: 14 });
+            const [guestCount, setGuestCount] = useState(250);
+            const [rooms, setRooms] = useState({});
+            
+            useEffect(() => {
+                if (!dates.start || !dates.end) return;
+                
+                const numDays = dates.end - dates.start + 1;
+                const newRooms = {};
+
+                for (let i = 0; i < numDays; i++) {
+                    let ratio = CONFIG.ratios.peak;
+                    
+                    if (i === 0) ratio = CONFIG.ratios.arrival;
+                    else if (i === numDays - 1) ratio = CONFIG.ratios.departure;
+                    
+                    if (numDays === 1) ratio = CONFIG.ratios.peak;
+
+                    newRooms[i] = Math.ceil(guestCount * ratio);
+                }
+                setRooms(newRooms);
+            }, [guestCount, dates]);
+
+            return (
+                <BookingContext.Provider value={{ dates, setDates, guestCount, setGuestCount, rooms, setRooms }}>
+                    {children}
+                </BookingContext.Provider>
+            );
+        };
+
+        // --- UI Components ---
+        const PrimaryButton = ({ children, onClick, disabled = false, loading = false, className = "" }) => (
+            <button
+                onClick={onClick}
+                disabled={disabled || loading}
+                className={`inline-flex items-center justify-center px-10 py-4 rounded-sm border transition-all duration-300
+                    border-gold/40 bg-transparent
+                    ${disabled || loading ? 'opacity-50 cursor-not-allowed' : 'hover:border-gold hover:bg-gold/5 hover:scale-[1.02] active:scale-95'}
+                    ${className}`}
+            >
+                {loading ? (
+                    <span className="material-symbols-outlined animate-spin text-gold">progress_activity</span>
+                ) : (
+                    <span className="font-ui text-[0.7rem] tracking-[0.24em] uppercase text-parchment/90">
+                        {children}
+                    </span>
+                )}
+            </button>
+        );
+
+        const RitualCTA = ({ onClick, disabled }) => {
+            return (
+                <button 
+                    onClick={onClick} 
+                    disabled={disabled}
+                    className="group relative inline-flex flex-col items-center justify-center min-w-[280px] py-6 px-10 bg-transparent outline-none cursor-pointer transition-all duration-500 hover:scale-105"
+                >
+                    <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')]"></div>
+                    
+                    <div className="absolute top-0 w-full flex items-center justify-center">
+                        <div className="h-px w-1/4 bg-gradient-to-r from-transparent via-gold/60 to-transparent transition-all duration-500 group-hover:w-1/2"></div>
+                        <div className="w-2 h-2 border border-gold transform rotate-45 bg-void z-10 box-border transition-transform duration-500 group-hover:rotate-180"></div>
+                        <div className="h-px w-1/4 bg-gradient-to-r from-transparent via-gold/60 to-transparent transition-all duration-500 group-hover:w-1/2"></div>
+                    </div>
+
+                    <div className="absolute bottom-0 w-full flex items-center justify-center">
+                        <div className="h-px w-1/4 bg-gradient-to-r from-transparent via-gold/60 to-transparent transition-all duration-500 group-hover:w-1/2"></div>
+                        <div className="w-2 h-2 border border-gold transform rotate-45 bg-void z-10 box-border transition-transform duration-500 group-hover:rotate-180"></div>
+                        <div className="h-px w-1/4 bg-gradient-to-r from-transparent via-gold/60 to-transparent transition-all duration-500 group-hover:w-1/2"></div>
+                    </div>
+
+                    <div className="absolute top-2 bottom-2 left-0 w-px bg-gradient-to-b from-transparent via-gold/30 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute top-2 bottom-2 right-0 w-px bg-gradient-to-b from-transparent via-gold/30 to-transparent opacity-50 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                    <span className="font-heading text-2xl tracking-[0.1em] text-parchment group-hover:text-gold-light transition-colors duration-500 z-10 relative">
+                        Start Planning
+                    </span>
+                    
+                    <span className="mt-2 font-ui text-[0.55rem] tracking-[0.4em] text-gold uppercase opacity-60 group-hover:opacity-100 transition-all duration-500">
+                        Begin The Ceremony
+                    </span>
+
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-12 bg-gold/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                </button>
+            );
+        }
+
+        const CornerFlourish = ({ className }) => (
+            <svg viewBox="0 0 50 50" className={className} xmlns="http://www.w3.org/2000/svg">
+                <path fill="none" stroke="currentColor" strokeWidth="1.5" d="M1 50 V 15 Q 1 1 15 1 H 50" />
+                <path fill="none" stroke="currentColor" strokeWidth="1" d="M5 50 V 18 Q 5 5 18 5 H 50" opacity="0.6"/>
+            </svg>
+        );
+
+        const ScrollToTop = () => {
+            const { pathname } = useLocation();
+            useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+            return null;
+        };
+
+        // --- Navigation ---
+        const Navigation = () => {
+            return (
+                <header className="fixed top-0 left-0 w-full z-50 py-4 md:py-8 transition-all duration-700 pointer-events-none">
+                    <div className="max-w-7xl mx-auto px-5 sm:px-8 flex justify-center md:justify-between items-center pointer-events-auto">
+                        <Link to="/" className="group flex flex-col items-center md:items-start gap-1">
+                            <div className="flex items-center gap-3">
+                                <span className="material-symbols-outlined text-gold text-2xl">temple_hindu</span>
+                                <span className="font-heading text-2xl tracking-widest text-parchment group-hover:text-gold-light transition-colors">ANANTA</span>
+                            </div>
+                            <span className="font-ui text-[0.6rem] tracking-[0.3em] text-gold-dim uppercase ml-1">Eternal Vows India</span>
+                        </Link>
+                        
+                        <nav className="hidden md:flex items-center gap-8">
+                            <Link to="/calendar" className="font-ui text-[0.65rem] tracking-[0.2em] text-parchment/60 hover:text-gold uppercase transition-colors">Dates</Link>
+                            <Link to="/guests" className="font-ui text-[0.65rem] tracking-[0.2em] text-gold border-b border-gold/50 pb-1 uppercase transition-colors">Plan</Link>
+                        </nav>
+                    </div>
+                </header>
+            );
+        };
+
+        // --- Page 1: Landing (With Mandala Background) ---
+        const LandingPage = () => {
+            const navigate = useNavigate();
+            const [entering, setEntering] = useState(false);
+
+            return (
+                <main className={`relative min-h-[100svh] w-full flex items-center justify-center overflow-hidden page-transition ${entering ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                    style={{ paddingTop: 'calc(var(--safe-top) + 72px)', paddingBottom: 'calc(var(--safe-bottom) + 40px)' }}>
+                    
+                    <div className="absolute inset-0 z-0 bg-void flex items-center justify-center overflow-hidden">
+                        <div className="w-[140vmax] h-[140vmax] opacity-40 animate-spin-slow origin-center">
+                            <MandalaBackground />
+                        </div>
+                        <div className="absolute inset-0 bg-radial-vignette pointer-events-none"></div>
+                    </div>
+
+                    <div className="relative z-10 w-full px-5 sm:px-6">
+                        <div className="mx-auto max-w-3xl text-center space-y-6 sm:space-y-7">
+                            <p className="font-ui text-[0.6rem] sm:text-[0.65rem] tracking-[0.28em] uppercase text-parchment/70">Indian Destination Wedding Planning</p>
+                            <h1 className="font-heading text-3xl sm:text-4xl md:text-6xl text-parchment leading-tight">Begin Your <span className="text-gold-light">Wedding</span> Journey</h1>
+                            <p className="font-body text-base sm:text-lg md:text-xl text-parchment/75 leading-relaxed max-w-2xl mx-auto">Select your destination, choose your dates, and receive an instant estimate.</p>
+                            
+                            <div className="pt-10 flex justify-center">
+                                <RitualCTA 
+                                    onClick={() => { setEntering(true); setTimeout(() => navigate('/calendar'), 500); }} 
+                                    disabled={entering} 
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            );
+        };
+
+        // --- Page 2: Calendar ---
+        const CalendarPage = () => {
+            const navigate = useNavigate();
+            const { dates, setDates } = useContext(BookingContext);
+            const [status, setStatus] = useState('idle');
+
+            const handleDateClick = (day) => {
+                if (day < 5) return; 
+                if (!dates.start || (dates.start && dates.end)) setDates({ start: day, end: null });
+                else day < dates.start ? setDates({ start: day, end: null }) : setDates({ ...dates, end: day });
+            };
+
+            const handleCheckAvailability = () => {
+                setStatus('checking');
+                setTimeout(() => {
+                    setStatus('success');
+                    setTimeout(() => navigate('/guests'), 800);
+                }, 1500);
+            };
+
+            const getDayStatus = (day) => {
+                if (day === dates.start) return 'start';
+                if (day === dates.end) return 'end';
+                if (dates.start && dates.end && day > dates.start && day < dates.end) return 'range';
+                return 'none';
+            };
+
+            const totalDays = dates.start && dates.end ? dates.end - dates.start + 1 : 0;
+
+            return (
+                <div className="min-h-screen pt-24 md:pt-32 pb-12 px-5 sm:px-6 flex flex-col items-center page-transition relative bg-surface">
+                    <div className="text-center space-y-3 mb-12 z-10">
+                        <Link to="/" className="inline-flex items-center gap-2 font-ui text-[0.6rem] tracking-[0.2em] text-gold-dim hover:text-gold uppercase mb-4 transition-colors"><span className="material-symbols-outlined text-sm">arrow_back</span> Home</Link>
+                        <span className="material-symbols-outlined text-gold-dim text-3xl">event_available</span>
+                        <h2 className="font-heading text-4xl md:text-5xl text-parchment">Auspicious Dates</h2>
+                        <p className="font-body text-lg text-parchment/60">Select the duration of your celebration.</p>
+                    </div>
+
+                    <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-12 items-start z-10">
+                        <div className="relative h-56 sm:h-80 lg:h-[600px] rounded-sm overflow-hidden border border-gold-dim/20 shadow-2xl">
+                            <SafeImage src="https://images.unsplash.com/photo-1590050752117-238cb0fb12b1?q=80&w=1200&auto=format&fit=crop" className="h-full w-full object-cover opacity-90" alt="Royal Mandap" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-void via-transparent to-transparent opacity-90"></div>
+                            <div className="absolute bottom-10 left-10 right-10">
+                                <p className="font-heading text-3xl text-gold-light mb-2">The Royal Mandap</p>
+                                <p className="font-body text-parchment/80 leading-relaxed">"A wedding isn't just an event; it's a legacy. Ensure your dates align with destiny."</p>
+                            </div>
+                        </div>
+
+                        <div className="glass-panel p-6 sm:p-8 md:p-12 rounded-sm shadow-2xl relative w-full">
+                            <CornerFlourish className="absolute top-4 left-4 w-12 h-12 text-gold opacity-40" />
+                            <CornerFlourish className="absolute bottom-4 right-4 w-12 h-12 text-gold opacity-40 rotate-180" />
+                            <div className="flex items-center justify-between mb-8 pb-4 border-b border-gold/10">
+                                <span className="font-heading text-2xl text-gold-light">December 2026</span>
+                            </div>
+                            <div className="grid grid-cols-7 gap-y-5 sm:gap-y-6 gap-x-2 text-center mb-10">
+                                {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => <span key={d} className="font-ui text-[0.6rem] font-bold text-gold-dim uppercase tracking-widest">{d}</span>)}
+                                {Array(2).fill(null).map((_, i) => <div key={`empty-${i}`} />)}
+                                {Array(31).fill(null).map((_, i) => {
+                                    const day = i + 1;
+                                    const dayStatus = getDayStatus(day);
+                                    const isInteractive = day >= 5;
+                                    return (
+                                        <button key={day} onClick={() => isInteractive && handleDateClick(day)} disabled={!isInteractive} style={{ touchAction: 'manipulation' }}
+                                            className={`relative h-10 w-10 mx-auto flex items-center justify-center text-base font-heading transition-all duration-300 rounded-full
+                                                ${!isInteractive ? 'text-white/10 cursor-not-allowed' : 'text-parchment hover:text-white hover:bg-white/5'}
+                                                ${dayStatus === 'start' || dayStatus === 'end' ? 'bg-gold text-void font-bold shadow-[0_0_15px_rgba(212,175,55,0.4)] scale-110 z-10' : ''}
+                                                ${dayStatus === 'range' ? 'bg-gold/10 text-gold-light' : ''}`}>
+                                            {dayStatus === 'range' && <div className="absolute inset-y-0 -left-2 -right-2 bg-gold/10 -z-10"></div>}
+                                            {dayStatus === 'start' && dates.end && <div className="absolute inset-y-0 right-0 w-1/2 bg-gold/10 -z-10"></div>}
+                                            {dayStatus === 'end' && <div className="absolute inset-y-0 left-0 w-1/2 bg-gold/10 -z-10"></div>}
+                                            {day}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            <div className="space-y-6 pt-6 border-t border-gold/10">
+                                <div className="flex justify-between items-end">
+                                    <div><p className="font-ui text-[0.6rem] uppercase tracking-widest text-gold-dim mb-1">Selected Dates</p><p className="font-heading text-xl text-parchment">{dates.start ? `Dec ${dates.start}` : '--'} <span className="text-gold/50 mx-2">—</span>{dates.end ? `Dec ${dates.end}` : '--'}</p></div>
+                                    <div className="text-right"><p className="font-ui text-[0.6rem] uppercase tracking-widest text-gold-dim mb-1">Duration</p><p className="font-heading text-xl text-parchment">{totalDays > 0 ? `${totalDays} Days` : '--'}</p></div>
+                                </div>
+                                <div className="flex flex-col items-center gap-4">
+                                    {status === 'success' ? (
+                                        <div className="w-full bg-primary/20 border border-primary/40 p-4 rounded-sm flex items-center justify-center gap-3 animate-fade-in text-parchment">
+                                            <span className="material-symbols-outlined text-gold">verified</span><span className="font-heading text-lg">Dates Available</span>
+                                        </div>
+                                    ) : (
+                                        <PrimaryButton disabled={!dates.start || !dates.end} loading={status === 'checking'} onClick={handleCheckAvailability} className="w-full">Check Availability</PrimaryButton>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Page 3: Guest Planning (Dynamic Itinerary) ---
+        const GuestPlanningPage = () => {
+            const { dates, guestCount, setGuestCount, rooms, setRooms } = useContext(BookingContext);
+            const [activeMilestone, setActiveMilestone] = useState('');
+
+            const navigate = useNavigate();
+            useEffect(() => {
+                if (!dates.start || !dates.end) navigate('/calendar');
+            }, [dates, navigate]);
+
+            const adjustRooms = (index, delta) => {
+                const current = rooms[index] || 0;
+                setRooms({ ...rooms, [index]: Math.max(0, current + delta) });
+            };
+
+            const roomIndices = Object.keys(rooms);
+            const totalRooms = roomIndices.reduce((sum, idx) => sum + (rooms[idx] || 0), 0);
+            
+            const accommodationCost = totalRooms * CONFIG.costs.roomPerNight;
+            const cateringCost = guestCount * CONFIG.costs.cateringPerGuest;
+            const logisticsCost = CONFIG.costs.logisticsBase + (guestCount * CONFIG.costs.logisticsPerGuest);
+            const subtotal = accommodationCost + cateringCost + logisticsCost;
+            const taxes = subtotal * CONFIG.costs.taxRate;
+            const grandTotal = subtotal + taxes;
+
+            useEffect(() => {
+                if (guestCount <= 50) setActiveMilestone('intimate');
+                else if (guestCount <= 100) setActiveMilestone('classic');
+                else if (guestCount <= 300) setActiveMilestone('grand');
+                else setActiveMilestone('royal');
+            }, [guestCount]);
+
+            const getDayLabel = (index, totalDays) => {
+                if (totalDays === 1) return { label: "The Wedding", sub: "Ceremony & Celebration", highlight: true };
+                if (index === 0) return { label: "The Welcome", sub: "Dinner & Sangeet", highlight: false };
+                if (index === totalDays - 1) return { label: "Checkout", sub: "Breakfast & Departure", highlight: false };
+                if (index === totalDays - 2) return { label: "The Wedding", sub: "Ceremony & Reception", highlight: true };
+                return { label: "Celebration", sub: "Mehendi & Haldi", highlight: false };
+            };
+
+            const numDays = dates.end - dates.start + 1;
+
+            return (
+                <div className="min-h-screen pt-24 md:pt-32 pb-24 px-5 sm:px-6 page-transition relative bg-surface">
+                    
+                    <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 relative">
+                        
+                        <div className="flex-1 flex flex-col gap-10 z-10">
+                             <div className="flex flex-col gap-6 text-center md:text-left">
+                                <div className="flex items-center justify-center md:justify-start gap-3 text-xs font-ui tracking-widest uppercase text-gold-dim">
+                                    <Link to="/calendar" className="hover:text-gold transition-colors flex items-center gap-1"><span className="material-symbols-outlined text-sm">arrow_back</span> Back</Link>
+                                    <span className="w-8 h-px bg-gold-dim/40"></span>
+                                    <span>Logistics</span>
+                                </div>
+                                <div>
+                                    <h1 className="text-4xl md:text-6xl font-heading text-parchment tracking-wide mb-4">Guest & <span className="italic text-gold-light">Stay</span></h1>
+                                    <p className="font-body text-parchment/60 text-lg max-w-2xl leading-relaxed">Curate the perfect experience for your guests. Manage attendance and align your royal stay requirements.</p>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel p-8 rounded-sm border border-gold/20 relative">
+                                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
+                                    <div>
+                                        <h2 className="text-2xl font-heading text-gold-light flex items-center gap-3">
+                                            <span className="material-symbols-outlined text-gold font-thin text-3xl">groups_2</span> Expected Guests
+                                        </h2>
+                                        <p className="text-sm text-parchment/60 mt-2 font-body">Total attendance including family & dignitaries.</p>
+                                    </div>
+                                    <div className="flex items-center gap-6 p-1 bg-void/30 rounded-full border border-gold/10">
+                                        <button onClick={() => setGuestCount(Math.max(0, guestCount - 10))} className="size-12 rounded-full text-gold hover:bg-gold/10 flex items-center justify-center transition-all"><span className="material-symbols-outlined">remove</span></button>
+                                        <input className="w-20 text-center text-3xl font-heading text-parchment bg-transparent border-none focus:ring-0 p-0" type="number" value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} />
+                                        <button onClick={() => setGuestCount(guestCount + 10)} className="size-12 rounded-full text-gold hover:bg-gold/10 flex items-center justify-center transition-all"><span className="material-symbols-outlined">add</span></button>
+                                    </div>
+                                </div>
+                                <div className="px-2 py-4 relative">
+                                    <input type="range" min="0" max="500" value={guestCount} onChange={(e) => setGuestCount(Number(e.target.value))} />
+                                    <div className="flex justify-between mt-4 text-[0.6rem] font-ui uppercase tracking-widest text-gold-dim">
+                                        <span className={activeMilestone === 'intimate' ? 'text-gold' : ''}>Intimate</span>
+                                        <span className={activeMilestone === 'classic' ? 'text-gold' : ''}>Classic</span>
+                                        <span className={activeMilestone === 'grand' ? 'text-gold' : ''}>Grand</span>
+                                        <span className={activeMilestone === 'royal' ? 'text-gold' : ''}>Royal</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex flex-col gap-6">
+                                <div className="flex justify-between items-end border-b border-gold/20 pb-4">
+                                    <h2 className="text-2xl font-heading text-gold-light flex items-center gap-3"><span className="material-symbols-outlined text-gold font-thin text-3xl">bed</span> Room Allocation</h2>
+                                    <p className="text-lg font-heading italic text-parchment/80 hidden sm:block">Smart Allocation ({numDays} Days)</p>
+                                </div>
+                                
+                                <div className="grid gap-4">
+                                    {Array.from({ length: numDays }).map((_, i) => {
+                                        const details = getDayLabel(i, numDays);
+                                        const count = rooms[i] || 0;
+                                        const displayNum = (i + 1).toString().padStart(2, '0');
+
+                                        return (
+                                            <div key={i} className={`group relative p-6 border transition-all duration-300 flex flex-col sm:flex-row items-center gap-6
+                                                ${details.highlight ? 'bg-void/60 border-gold/40 shadow-xl scale-[1.02] z-10' : 'glass-panel border-gold/10 hover:border-gold/30'}`}>
+                                                
+                                                <div className="flex gap-5 items-center flex-1 w-full sm:w-auto">
+                                                    <div className={`size-12 border ${details.highlight ? 'border-gold text-gold' : 'border-gold-dim text-gold-dim'} font-heading text-xl flex items-center justify-center`}>
+                                                        {displayNum}
+                                                    </div>
+                                                    <div>
+                                                        <h3 className="font-heading text-xl text-parchment mb-1">{details.label}</h3>
+                                                        <p className="text-xs text-gold-dim uppercase tracking-wider">{details.sub}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="flex items-center gap-8 w-full sm:w-auto justify-between sm:justify-end">
+                                                    <div className="text-right hidden sm:block">
+                                                        <p className="text-[0.6rem] text-gold-dim uppercase tracking-wider">Est. Cost</p>
+                                                        <p className="text-sm font-medium text-parchment font-heading">{formatCurrency(count * CONFIG.costs.roomPerNight)}</p>
+                                                    </div>
+                                                    <div className="flex items-center gap-3 bg-void/40 p-1 rounded-full border border-gold/20">
+                                                        <button onClick={() => adjustRooms(i, -5)} className="size-8 rounded-full text-gold-dim hover:text-gold hover:bg-gold/10 flex items-center justify-center transition-colors"><span className="material-symbols-outlined text-sm">remove</span></button>
+                                                        <div className="w-12 text-center"><span className="text-parchment font-heading text-lg">{count}</span></div>
+                                                        <button onClick={() => adjustRooms(i, 5)} className="size-8 rounded-full text-gold-dim hover:text-gold hover:bg-gold/10 flex items-center justify-center transition-colors"><span className="material-symbols-outlined text-sm">add</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="w-full lg:w-[400px] shrink-0 z-10">
+                            <div className="lg:sticky lg:top-32 glass-panel p-1 rounded-sm">
+                                <div className="bg-void/90 p-8 relative overflow-hidden border border-gold/10">
+                                    <div className="absolute top-0 right-0 p-8 opacity-5 pointer-events-none"><span className="material-symbols-outlined text-9xl text-gold">temple_hindu</span></div>
+                                    
+                                    <div className="relative z-10">
+                                        <h2 className="text-2xl font-heading text-parchment mb-1">Your Investment</h2>
+                                        <p className="text-xs text-gold-dim uppercase tracking-widest mb-8">Estimated Cost Summary</p>
+                                        
+                                        <div className="flex flex-col gap-4 pb-6 border-b border-dashed border-gold/20">
+                                            <div className="flex justify-between items-center"><span className="text-sm text-parchment/60 font-body">Accommodation <span className="text-gold-dim text-xs">({totalRooms} nights)</span></span><span className="text-sm font-medium text-parchment font-heading">{formatCurrency(accommodationCost)}</span></div>
+                                            <div className="flex justify-between items-center"><span className="text-sm text-parchment/60 font-body">Royal Catering</span><span className="text-sm font-medium text-parchment font-heading">{formatCurrency(cateringCost)}</span></div>
+                                            <div className="flex justify-between items-center"><span className="text-sm text-parchment/60 font-body">Logistics</span><span className="text-sm font-medium text-parchment font-heading">{formatCurrency(logisticsCost)}</span></div>
+                                        </div>
+
+                                        <div className="py-6 border-b border-gold/20 flex flex-col gap-3">
+                                            <div className="flex justify-between items-center"><span className="text-xs text-gold uppercase tracking-wider">Subtotal</span><span className="text-base text-parchment font-heading">{formatCurrency(subtotal)}</span></div>
+                                            <div className="flex justify-between items-center"><span className="text-sm text-parchment/40 font-body">Taxes (18%)</span><span className="text-sm text-parchment/60 font-heading">{formatCurrency(taxes)}</span></div>
+                                        </div>
+
+                                        <div className="py-6 text-center">
+                                            <p className="text-[0.6rem] uppercase tracking-[0.3em] text-gold-dim mb-2">Grand Total</p>
+                                            <p className="text-4xl font-heading text-gold-light highlight-pulse">{formatCurrency(grandTotal)}</p>
+                                        </div>
+
+                                        <PrimaryButton className="w-full border-gold/60 text-gold">Proceed to Services</PrimaryButton>
+                                        <p className="text-center text-[0.6rem] text-gold-dim mt-4 uppercase tracking-wider opacity-60">Estimates subject to booking.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // --- Main App Component ---
+        const AppLayout = () => {
+            const { pathname } = useLocation();
+            const showMotifs = pathname !== '/';
+
+            return (
+                <div className="min-h-screen flex flex-col relative bg-void">
+                    {showMotifs && <div className="wedding-motifs-overlay"></div>}
+                    <ScrollToTop />
+                    <Navigation />
+                    <Routes>
+                        <Route path="/" element={<LandingPage />} />
+                        <Route path="/calendar" element={<CalendarPage />} />
+                        <Route path="/guests" element={<GuestPlanningPage />} />
+                    </Routes>
+                    
+                    <footer className="mt-auto w-full py-6 text-center pointer-events-none z-20" style={{ paddingBottom: 'calc(var(--safe-bottom) + 16px)' }}>
+                        <p className="font-body text-xs text-parchment/20">© 2026 Ananta Vows India. All Rights Reserved.</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        const App = () => (
+            <BookingProvider>
+                <HashRouter>
+                    <AppLayout />
+                </HashRouter>
+            </BookingProvider>
+        );
+
+        const container = document.getElementById('root');
+        const root = createRoot(container);
+        root.render(<App />);
+    </script>
+</body>
+</html>
